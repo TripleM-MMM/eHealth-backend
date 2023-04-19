@@ -1,5 +1,0 @@
-rootProject.name = 'eHealth-backend'
-
-include 'device-service'
-include 'user-service'
-include 'sensorsdata-service'
