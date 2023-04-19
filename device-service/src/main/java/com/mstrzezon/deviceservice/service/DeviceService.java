@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,14 +23,15 @@ public class DeviceService {
                 .name(deviceRequest.getName())
                 .description(deviceRequest.getDescription())
                 .build();
-        deviceRepository.save(device);
+//        deviceRepository.save(device);
         log.info("Device created: {}", device);
     }
 
     public List<DeviceResponse> getAllDevices() {
-        List<Device> devices = deviceRepository.findAll();
+//        List<Device> devices = deviceRepository.findAll();
 
-        return devices.stream().map(this::mapToDeviceResponse).toList();
+//        return devices.stream().map(this::mapToDeviceResponse).toList();
+        return Collections.emptyList();
     }
 
     private DeviceResponse mapToDeviceResponse(Device device) {
