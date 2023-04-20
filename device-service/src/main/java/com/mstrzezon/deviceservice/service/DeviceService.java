@@ -7,6 +7,7 @@ import com.mstrzezon.deviceservice.repository.DeviceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 public class DeviceService {
 
     private final DeviceRepository deviceRepository;
+
+    private final WebClient.Builder webClientBuilder;
 
     public void createDevice(DeviceRequest deviceRequest) {
         Device device = Device.builder()
@@ -31,7 +34,16 @@ public class DeviceService {
 //        List<Device> devices = deviceRepository.findAll();
 
 //        return devices.stream().map(this::mapToDeviceResponse).toList();
+
         return Collections.emptyList();
+    }
+
+    public String getMeasurement() {
+        return webClientBuilder.build().get()
+                .uri("http://sensorsdata-service/api/measurement")
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 
     private DeviceResponse mapToDeviceResponse(Device device) {

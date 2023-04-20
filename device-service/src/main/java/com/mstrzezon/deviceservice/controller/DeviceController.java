@@ -1,13 +1,10 @@
 package com.mstrzezon.deviceservice.controller;
 
 import com.mstrzezon.deviceservice.dto.DeviceRequest;
-import com.mstrzezon.deviceservice.dto.DeviceResponse;
 import com.mstrzezon.deviceservice.service.DeviceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/device")
@@ -24,7 +21,7 @@ public class DeviceController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<DeviceResponse> getDevice() {
-        return deviceService.getAllDevices();
+    public String getDevice() {
+        return deviceService.getMeasurement();
     }
 }

@@ -19,4 +19,10 @@ public class MeasurementController {
         measurementService.addMeasurement(measurementRequest);
         return "Measurement added successfully";
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public String getMeasurement() {
+        return "Measurement";
+    }
 }
