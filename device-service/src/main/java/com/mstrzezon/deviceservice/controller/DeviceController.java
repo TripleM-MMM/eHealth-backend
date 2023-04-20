@@ -1,4 +1,4 @@
-package com.mstrzezon.deviceservice.repository;
+package com.mstrzezon.deviceservice.controller;
 
 import com.mstrzezon.deviceservice.dto.DeviceRequest;
 import com.mstrzezon.deviceservice.dto.DeviceResponse;
