@@ -22,6 +22,6 @@ public class DeviceController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public String getDevice() {
-        return deviceService.getMeasurement();
+        return "device";
     }
 }
