@@ -1,32 +1,19 @@
-package com.mstrzezon.userservice.model;
+package com.mstrzezon.userservice.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Table(name = "user")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@Builder
+public class UserOutDTO {
     private Long id;
-
     private String firstName;
-
     private String lastName;
-
     private String username;
-
     private String email;
-
-    private String password;
-
     private String keycloakUserId;
 }
