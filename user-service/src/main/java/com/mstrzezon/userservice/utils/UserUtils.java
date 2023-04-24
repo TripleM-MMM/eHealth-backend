@@ -8,6 +8,10 @@ import java.util.Collections;
 
 public class UserUtils {
 
+    public static String getUserIdFromLocationHeader(javax.ws.rs.core.Response response) {
+        return response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
+    }
+
     public static UserRepresentation mapUserInDTOToUserRepresentation(UserInDTO userInDTO) {
         UserRepresentation userRepresentation = new UserRepresentation();
         userRepresentation.setFirstName(userInDTO.getFirstName());
@@ -19,7 +23,7 @@ public class UserUtils {
         return userRepresentation;
     }
 
-    private static CredentialRepresentation mapPasswordToCredentialRepresentation(String password) {
+    public static CredentialRepresentation mapPasswordToCredentialRepresentation(String password) {
         CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
         credentialRepresentation.setTemporary(false);
         credentialRepresentation.setType(CredentialRepresentation.PASSWORD);

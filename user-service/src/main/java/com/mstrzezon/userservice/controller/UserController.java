@@ -1,5 +1,6 @@
 package com.mstrzezon.userservice.controller;
 
+import com.mstrzezon.userservice.dto.UpdatedUserDTO;
 import com.mstrzezon.userservice.dto.UserInDTO;
 import com.mstrzezon.userservice.dto.UserOutDTO;
 import com.mstrzezon.userservice.service.UserService;
@@ -24,7 +25,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserOutDTO getUser(@PathVariable Long id) {
+    public UserOutDTO getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
 
@@ -36,8 +37,8 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserOutDTO updateUser(@PathVariable Long id, @RequestBody UserInDTO userInDTO) {
-        return userService.updateUser(id, userInDTO);
+    public UserOutDTO updateUser(@PathVariable Long id, @RequestBody UpdatedUserDTO updatedUserDTO) {
+        return userService.updateUser(id, updatedUserDTO);
     }
 
     @PostMapping("/{id}/credentials/change-password")
