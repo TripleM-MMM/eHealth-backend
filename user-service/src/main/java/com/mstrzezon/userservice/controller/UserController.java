@@ -1,8 +1,6 @@
 package com.mstrzezon.userservice.controller;
 
-import com.mstrzezon.userservice.dto.UpdatedUserDTO;
-import com.mstrzezon.userservice.dto.UserInDTO;
-import com.mstrzezon.userservice.dto.UserOutDTO;
+import com.mstrzezon.userservice.dto.*;
 import com.mstrzezon.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,5 +49,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void forgotPassword(@PathVariable Long id) {
         userService.forgotPassword(id);
+    }
+
+    @PostMapping("/{user_id}/devices")
+    @ResponseStatus(HttpStatus.OK)
+    public DeviceOutDTO addDevice(@PathVariable("user_id") Long userId, @RequestBody DeviceInDTO deviceInDTO) {
+        return userService.addDevice(userId, deviceInDTO);
     }
 }

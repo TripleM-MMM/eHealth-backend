@@ -1,4 +1,4 @@
-package com.mstrzezon.deviceservice.dto;
+package com.mstrzezon.userservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeviceRequest {
+public class DeviceOutDTO {
+    private Long id;
     private String name;
     private String description;
 }

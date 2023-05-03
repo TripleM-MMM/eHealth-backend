@@ -1,20 +1,16 @@
 package com.mstrzezon.sensorsdataservice.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "measurements")
-@Getter
-@Setter
+@Document(value = "device")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Data
 public class Measurement {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String sensorId;

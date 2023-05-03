@@ -1,16 +1,17 @@
 package com.mstrzezon.userservice.service;
 
 import com.mstrzezon.userservice.client.KeycloakClient;
-import com.mstrzezon.userservice.dto.UpdatedUserDTO;
-import com.mstrzezon.userservice.dto.UserInDTO;
-import com.mstrzezon.userservice.dto.UserOutDTO;
+import com.mstrzezon.userservice.dto.*;
 import com.mstrzezon.userservice.model.User;
 import com.mstrzezon.userservice.repository.UserRepository;
 import com.mstrzezon.userservice.utils.UserUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -18,11 +19,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
 
     private final KeycloakClient keycloakClient;
+
+    private final WebClient.Builder webClientBuilder;
 
     public List<UserOutDTO> getUsers() {
         return userRepository.findAll().stream()
@@ -77,6 +81,14 @@ public class UserService {
         keycloakClient.getUsersResource().get(keycloakUserId).resetPassword(credentialRepresentation);
         user.setPassword(password);
         userRepository.save(user);
+    }
+
+    public DeviceOutDTO addDevice(long userId, DeviceInDTO deviceInDTO) {
+        DeviceOutDTO device = webClientBuilder.build().post().uri("http://device-service/api/device")
+                .body(BodyInserters.fromValue(deviceInDTO))
+                .retrieve().bodyToMono(DeviceOutDTO.class).block();
+        return webClientBuilder.build().post().uri("http://device-service/api/device/" + device.getId() + "/user/" + userId)
+                .retrieve().bodyToMono(DeviceOutDTO.class).block();
     }
 
     public void forgotPassword(Long id) {

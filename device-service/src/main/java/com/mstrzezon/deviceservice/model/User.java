@@ -9,22 +9,19 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Entity
-@Table(name = "devices")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class Device {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    @OneToMany(mappedBy = "owner")
+    private Set<Device> ownedDevices;
 
     @ManyToMany
-    private Set<User> sharedWith;
+    private Set<Device> sharedDevices;
 }

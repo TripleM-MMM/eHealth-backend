@@ -1,0 +1,72 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:8761/eureka/'
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      loadbalancer:
+        use404: true
+      routes:
+        - id: user-service
+          uri: 'lb://user-service'
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - RewritePath=/api/users/(?<path>.*), /$\{path}
+        - id: sensorsdata-service
+          uri: 'lb://sensorsdata-service'
+          predicates:
+            - Path=/api/measurement/**
+          filters:
+            - RewritePath=/api/measurement/(?<path>.*), /$\{path}
+        - id: device-service
+          uri: 'lb://device-service'
+          predicates:
+            - Path=/api/device/**
+          filters:
+            - RewritePath=/api/device/(?<path>.*), /$\{path}
+        - id: discovery-server
+          uri: 'http://localhost:8761'
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+        - id: discovery-server-static
+          uri: 'http://localhost:8761'
+          predicates:
+            - Path=/eureka/**
+        - id: openapi
+          uri: http://localhost:8080
+          predicates:
+            - Path=/v3/api-docs/**
+          filters:
+            - RewritePath=/v3/api-docs/(?<path>.*), /api/$\{path}/v3/api-docs
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://localhost:8081/realms/eHealth'
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: user
+        url: /v3/api-docs/users
+      - name: device
+        url: /v3/api-docs/device
+      - name: sensorsdata
+        url: /v3/api-docs/sensorsdata

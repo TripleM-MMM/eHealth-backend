@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://mysql.agh.edu.pl:3306/mstrzez1'
+    username: mstrzez1
+    password: DJjDxkzwEa6i3uKe
+  jpa:
+    hibernate:
+      ddl-auto: update
+  application:
+    name: user-service
+server:
+  port: '0'
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://localhost:8761/eureka'
