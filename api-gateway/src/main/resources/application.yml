@@ -19,12 +19,12 @@ spring:
             - Path=/api/users/**
           filters:
             - RewritePath=/api/users/(?<path>.*), /$\{path}
-        - id: sensorsdata-service
-          uri: 'lb://sensorsdata-service'
+        - id: measurements-service
+          uri: 'lb://measurements-service'
           predicates:
-            - Path=/api/measurement/**
+            - Path=/api/measurements/**
           filters:
-            - RewritePath=/api/measurement/(?<path>.*), /$\{path}
+            - RewritePath=/api/measurements/(?<path>.*), /$\{path}
         - id: device-service
           uri: 'lb://device-service'
           predicates:
@@ -68,5 +68,5 @@ springdoc:
         url: /v3/api-docs/users
       - name: device
         url: /v3/api-docs/device
-      - name: sensorsdata
-        url: /v3/api-docs/sensorsdata
+      - name: measurements
+        url: /v3/api-docs/measurements

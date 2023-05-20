@@ -31,7 +31,7 @@ public class DeviceService {
 
     public String getMeasurement() {
         return webClientBuilder.build().get()
-                .uri("http://sensorsdata-service/api/measurement")
+                .uri("http://measurements-service/api/measurement")
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

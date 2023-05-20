@@ -17,7 +17,7 @@ public class SecurityConfig {
                 .disable()
                 .authorizeExchange(exchange -> exchange.pathMatchers("/eureka/**", "/api/users", "/swagger-ui.html",
                                 "/webjars/swagger-ui/**", "/v3/api-docs/**", "/api/device/v3/**", "/api/users/v3/**",
-                                "/api/sensorsdata/v3/**")
+                                "/api/measurements/v3/**")
                         .permitAll()
                         .anyExchange()
                         .authenticated())
