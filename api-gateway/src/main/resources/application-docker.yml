@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: api-gateway
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+#      loadbalancer:
+#        use404: true
+#      routes:
+#        - id: user-service
+#          uri: 'lb://user-service'
+#          predicates:
+#            - Path=/api/users/**
+#          filters:
+#            - RewritePath=/api/users/(?<path>.*), /$\{path}
+#        - id: measurements-service
+#          uri: 'lb://measurements-service'
+#          predicates:
+#            - Path=/api/measurements/**
+#          filters:
+#            - RewritePath=/api/measurements/(?<path>.*), /$\{path}
+#        - id: device-service
+#          uri: 'lb://device-service'
+#          predicates:
+#            - Path=/api/device/**
+#          filters:
+#            - RewritePath=/api/device/(?<path>.*), /$\{path}
+#        - id: discovery-server
+#          uri: 'http://eureka:password@discovery-server:8761/eureka'
+#          predicates:
+#            - Path=/eureka/web
+#          filters:
+#            - SetPath=/
+#        - id: discovery-server-static
+#          uri: 'http://eureka:password@discovery-server:8761/eureka'
+#          predicates:
+#            - Path=/eureka/**
+#        - id: openapi
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/v3/api-docs/**
+#          filters:
+#            - RewritePath=/v3/api-docs/(?<path>.*), /api/$\{path}/v3/api-docs
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://localhost:8080/realms/eHealth'
+server:
+  port: '8080'
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://eureka:password@discovery-server:8761/eureka'
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: user
+        url: /v3/api-docs/users
+      - name: device
+        url: /v3/api-docs/device
+      - name: measurements
+        url: /v3/api-docs/measurements
