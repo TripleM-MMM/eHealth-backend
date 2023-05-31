@@ -18,19 +18,19 @@ spring:
           predicates:
             - Path=/api/users/**
           filters:
-            - RewritePath=/api/users/(?<path>.*), /$\{path}
+            - RewritePath=/api/users/v3/api-docs,/v3/api-docs
         - id: measurements-service
           uri: 'lb://measurements-service'
           predicates:
             - Path=/api/measurements/**
           filters:
-            - RewritePath=/api/measurements/(?<path>.*), /$\{path}
+            - RewritePath=/api/measurements/v3/api-docs,/v3/api-docs
         - id: device-service
           uri: 'lb://device-service'
           predicates:
             - Path=/api/device/**
           filters:
-            - RewritePath=/api/device/(?<path>.*), /$\{path}
+            - RewritePath=/api/device/v3/api-docs,/v3/api-docs
         - id: discovery-server
           uri: 'http://localhost:8761'
           predicates:

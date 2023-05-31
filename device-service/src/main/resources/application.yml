@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: 'jdbc:mysql://mysql.agh.edu.pl:3306/user-service'
+    url: 'jdbc:mysql://mysql.agh.edu.pl:3306/mstrzezo'
     username: mstrzezo
     password: Z5zYTvajwNsHtFgq
   jpa:

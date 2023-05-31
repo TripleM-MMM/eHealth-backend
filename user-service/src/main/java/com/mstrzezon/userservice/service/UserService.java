@@ -1,5 +1,10 @@
 package com.mstrzezon.userservice.service;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mstrzezon.userservice.client.KeycloakClient;
 import com.mstrzezon.userservice.dto.*;
 import com.mstrzezon.userservice.model.User;
@@ -7,8 +12,15 @@ import com.mstrzezon.userservice.repository.UserRepository;
 import com.mstrzezon.userservice.utils.UserUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.OAuth2Constants;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.representations.AccessToken;
+import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,6 +33,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
+
+    Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
 
@@ -55,7 +69,16 @@ public class UserService {
     public UserOutDTO createUser(UserInDTO userInDTO) {
         Response response = keycloakClient.getUsersResource().create(UserUtils.mapUserInDTOToUserRepresentation(userInDTO));
         if (response.getStatus() != 201) {
-            throw new RuntimeException("Error creating user");
+            ObjectWriter ow = new ObjectMapper()
+                    .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+                    .writer()
+                    .withDefaultPrettyPrinter();
+            try {
+                String json = ow.writeValueAsString(response);
+                throw new RuntimeException(json);
+            } catch (JsonProcessingException e) {
+                logger.error(e.getMessage());
+            }
         }
         String keycloakUserId = UserUtils.getUserIdFromLocationHeader(response);
         return saveToDatabase(userInDTO, keycloakUserId);
@@ -96,6 +119,18 @@ public class UserService {
         String keycloakUserId = user.getKeycloakUserId();
         UserRepresentation userRepresentation = keycloakClient.getUsersResource().get(keycloakUserId).toRepresentation();
         keycloakClient.getUsersResource().get(keycloakUserId).executeActionsEmail(List.of("RESET_PASSWORD"));
+    }
+
+    public AccessTokenResponse getAccessToken(AccessTokenDTO accessTokenDTO) {
+        Keycloak keycloak = KeycloakBuilder.builder()
+                .serverUrl("http://localhost:8081")
+                .realm("eHealth")
+                .clientId("spring-boot-client")
+                .username(accessTokenDTO.getUsername())
+                .password(accessTokenDTO.getPassword())
+                .grantType(OAuth2Constants.PASSWORD)
+                .build();
+        return keycloak.tokenManager().getAccessToken();
     }
 
     private void updateUser(UserRepresentation userRepresentation, UpdatedUserDTO updatedUserDTO) {

@@ -3,6 +3,7 @@ package com.mstrzezon.userservice.controller;
 import com.mstrzezon.userservice.dto.*;
 import com.mstrzezon.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserOutDTO updateUser(@PathVariable Long id, @RequestBody UpdatedUserDTO updatedUserDTO) {
         return userService.updateUser(id, updatedUserDTO);
+    }
+
+    @PostMapping("/access-token")
+    @ResponseStatus(HttpStatus.OK)
+    public AccessTokenResponse getAccessToken(@RequestBody AccessTokenDTO accessTokenDTO) {
+        return userService.getAccessToken(accessTokenDTO);
     }
 
     @PostMapping("/{id}/credentials/change-password")

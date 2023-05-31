@@ -4,6 +4,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.admin.client.resource.UsersResource;
+import org.keycloak.admin.client.token.TokenManager;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,6 +16,10 @@ public class KeycloakClient {
 
     public RolesResource getRolesResource() {
         return getInstance().realm("eHealth").roles();
+    }
+
+    public TokenManager getTokenManager() {
+        return getInstance().tokenManager();
     }
 
     public Keycloak getInstance() {
