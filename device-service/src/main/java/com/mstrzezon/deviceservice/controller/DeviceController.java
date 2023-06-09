@@ -48,7 +48,7 @@ public class DeviceController {
 
     @PostMapping("/{device_id}/owner/{user_id}")
     @ResponseStatus(HttpStatus.OK)
-    public DeviceOutDTO changeOwner(@PathVariable("device_id") Long deviceId, @PathVariable("user_id") Long userId) {
+    public DeviceOutDTO changeOwner(@PathVariable("device_id") Long deviceId, @PathVariable("user_id") String userId) {
         return deviceService.changeOwner(deviceId, userId);
     }
 
@@ -60,19 +60,19 @@ public class DeviceController {
 
     @PostMapping("/{device_id}/share/{user_id}")
     @ResponseStatus(HttpStatus.OK)
-    public void shareDevice(@PathVariable("device_id") Long deviceId, @PathVariable("user_id") Long userId) {
+    public void shareDevice(@PathVariable("device_id") Long deviceId, @PathVariable("user_id") String userId) {
         deviceService.shareDevice(deviceId, userId);
     }
 
     @PutMapping("/{device_id}/unshare/{user_id}")
     @ResponseStatus(HttpStatus.OK)
-    public void unshareDevice(@PathVariable("device_id") Long deviceId, @PathVariable("user_id") Long userId) {
+    public void unshareDevice(@PathVariable("device_id") Long deviceId, @PathVariable("user_id") String userId) {
         deviceService.unshareDevice(deviceId, userId);
     }
 
     @GetMapping("/{device_id}/shared-users")
     @ResponseStatus(HttpStatus.OK)
-    public List<Long> getSharedUsers(@PathVariable("device_id") Long deviceId) {
+    public List<String> getSharedUsers(@PathVariable("device_id") Long deviceId) {
         return deviceService.getSharedUsers(deviceId);
     }
 

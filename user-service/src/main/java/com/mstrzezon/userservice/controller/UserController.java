@@ -24,8 +24,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserOutDTO getUser(@PathVariable("id") Long id) {
+    public UserOutDTO getUser(@PathVariable("id") String id) {
         return userService.getUser(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable("id") String id) {
+        userService.deleteUser(id);
     }
 
     @PostMapping
@@ -36,25 +42,19 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserOutDTO updateUser(@PathVariable Long id, @RequestBody UpdatedUserDTO updatedUserDTO) {
+    public UserOutDTO updateUser(@PathVariable String id, @RequestBody UpdatedUserDTO updatedUserDTO) {
         return userService.updateUser(id, updatedUserDTO);
-    }
-
-    @PostMapping("/access-token")
-    @ResponseStatus(HttpStatus.OK)
-    public AccessTokenResponse getAccessToken(@RequestBody AccessTokenDTO accessTokenDTO) {
-        return userService.getAccessToken(accessTokenDTO);
     }
 
     @PostMapping("/{id}/credentials/change-password")
     @ResponseStatus(HttpStatus.OK)
-    public void changePassword(@PathVariable Long id, @RequestBody String password) {
+    public void changePassword(@PathVariable String id, @RequestBody String password) {
         userService.changePassword(id, password);
     }
 
     @PostMapping("/{id}/credentials/forgot-password")
     @ResponseStatus(HttpStatus.OK)
-    public void forgotPassword(@PathVariable Long id) {
+    public void forgotPassword(@PathVariable String id) {
         userService.forgotPassword(id);
     }
 
@@ -62,5 +62,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public DeviceOutDTO addDevice(@PathVariable("user_id") Long userId, @RequestBody DeviceInDTO deviceInDTO) {
         return userService.addDevice(userId, deviceInDTO);
+    }
+
+
+    @PostMapping("/access-token")
+    @ResponseStatus(HttpStatus.OK)
+    public AccessTokenResponse getAccessToken(@RequestBody AccessTokenDTO accessTokenDTO) {
+        return userService.getAccessToken(accessTokenDTO);
     }
 }

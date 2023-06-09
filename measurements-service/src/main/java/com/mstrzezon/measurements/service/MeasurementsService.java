@@ -12,7 +12,14 @@ import static java.util.Objects.isNull;
 public abstract class MeasurementsService {
 
     abstract Measurement getMeasurement(Long deviceId);
+
     abstract void saveMeasurement(Measurement measurement);
+
+    public List<MeasurementDTO> getMeasurements(Long deviceId) {
+        Measurement measurement = getMeasurement(deviceId);
+        return measurement.getMeasurements();
+    }
+
     void addMeasurements(Long deviceId, List<MeasurementDTO> measurements) {
         Measurement measurement = getMeasurement(deviceId);
         measurement.getMeasurements().addAll(measurements);

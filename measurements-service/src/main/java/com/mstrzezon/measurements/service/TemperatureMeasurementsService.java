@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
-class TemperatureMeasurementsService extends MeasurementsService {
+public class TemperatureMeasurementsService extends MeasurementsService {
 
     private final TemperatureMeasurementRepository repository;
 
@@ -23,4 +23,6 @@ class TemperatureMeasurementsService extends MeasurementsService {
     void saveMeasurement(Measurement measurement) {
         repository.save((TemperatureMeasurement) measurement);
     }
+
+
 }

@@ -64,21 +64,21 @@ public class DeviceService {
         deviceRepository.deleteById(id);
     }
 
-    public void shareDevice(Long deviceId, Long userId) {
+    public void shareDevice(Long deviceId, String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Device device = deviceRepository.findById(deviceId).orElseThrow(() -> new RuntimeException("Device not found"));
         device.getSharedWith().add(user);
         deviceRepository.save(device);
     }
 
-    public void unshareDevice(Long deviceId, Long userId) {
+    public void unshareDevice(Long deviceId, String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Device device = deviceRepository.findById(deviceId).orElseThrow(() -> new RuntimeException("Device not found"));
         device.getSharedWith().remove(user);
         deviceRepository.save(device);
     }
 
-    public List<Long> getSharedUsers(Long deviceId) {
+    public List<String> getSharedUsers(Long deviceId) {
         Device device = deviceRepository.findById(deviceId).orElseThrow(() -> new RuntimeException("Device not found"));
         return device.getSharedWith().stream().map(User::getId).toList();
     }
@@ -90,7 +90,7 @@ public class DeviceService {
         return mapToDeviceOutDTO(device);
     }
 
-    public DeviceOutDTO changeOwner(Long deviceId, Long userId) {
+    public DeviceOutDTO changeOwner(Long deviceId, String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Device device = deviceRepository.findById(deviceId).orElseThrow(() -> new RuntimeException("Device not found"));
         device.setOwner(user);
