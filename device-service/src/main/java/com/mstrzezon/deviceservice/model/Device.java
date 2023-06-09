@@ -1,20 +1,30 @@
 package com.mstrzezon.deviceservice.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(value = "device")
+import java.util.Set;
+
+@Entity
+@Table(name = "devices")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 public class Device {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
+    @ManyToMany
+    private Set<User> sharedWith;
 }

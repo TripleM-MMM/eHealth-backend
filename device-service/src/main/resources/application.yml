@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://mysql.agh.edu.pl:3306/mstrzezo'
+    username: mstrzezo
+    password: Z5zYTvajwNsHtFgq
+  jpa:
+    hibernate:
+      ddl-auto: update
+  application:
+    name: device-service
+server:
+  port: '0'
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://localhost:8761/eureka'
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+# Resilence4j properties
+resilience4j:
+  circuitbreaker:
+    instances:
+      measurements:
+        registerHealthIndicator: true
+        event-consumer-buffer-size: 10
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true

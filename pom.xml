@@ -17,18 +17,19 @@
     <packaging>pom</packaging>
     <modules>
         <module>device-service</module>
-        <module>sensorsdata-service</module>
+        <module>measurements-service</module>
         <module>user-service</module>
         <module>discovery-server</module>
         <module>api-gateway</module>
     </modules>
 
     <properties>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <testcontainers.version>1.18.0</testcontainers.version>
         <spring-cloud.version>2022.0.2</spring-cloud.version>
+        <spring-doc.version>2.1.0</spring-doc.version>
     </properties>
 
     <dependencyManagement>
@@ -51,6 +52,21 @@
                 <groupId>org.keycloak</groupId>
                 <artifactId>keycloak-admin-client</artifactId>
                 <version>21.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+                <version>${spring-doc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webflux-api</artifactId>
+                <version>${spring-doc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+                <version>${spring-doc.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -80,27 +96,14 @@
                     </excludes>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.google.cloud.tools</groupId>-->
-<!--                <artifactId>jib-maven-plugin</artifactId>-->
-<!--                <version>3.2.1</version>-->
-<!--                <configuration>-->
-<!--                    <from>-->
-<!--                        <image>eclipse-temurin:17.0.4.1_1-jre</image>-->
-<!--                    </from>-->
-<!--                    <to>-->
-<!--                        <image>microservices-tutorial/${project.artifactId}</image>-->
-<!--                    </to>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>dockerBuild</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <to><image>registry.hub.docker.com/mstrzezon/${project.artifactId}</image></to>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
