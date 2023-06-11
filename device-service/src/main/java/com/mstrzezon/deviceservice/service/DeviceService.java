@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -26,16 +25,6 @@ public class DeviceService {
     private final DeviceRepository deviceRepository;
 
     private final UserRepository userRepository;
-
-    private final WebClient.Builder webClientBuilder;
-
-    public String getMeasurement() {
-        return webClientBuilder.build().get()
-                .uri("http://measurements-service/api/measurement")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
 
     public List<DeviceOutDTO> getDevices() {
         List<Device> devices = deviceRepository.findAll();
@@ -65,16 +54,16 @@ public class DeviceService {
     }
 
     public void shareDevice(Long deviceId, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElse(userRepository.save(User.builder().id(userId).build()));
         Device device = deviceRepository.findById(deviceId).orElseThrow(() -> new RuntimeException("Device not found"));
         device.getSharedWith().add(user);
         deviceRepository.save(device);
     }
 
     public void unshareDevice(Long deviceId, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElse(userRepository.save(User.builder().id(userId).build()));
         Device device = deviceRepository.findById(deviceId).orElseThrow(() -> new RuntimeException("Device not found"));
-        device.getSharedWith().remove(user);
+        device.getSharedWith().removeIf(sharedUser -> sharedUser.getId().equals(user.getId()));
         deviceRepository.save(device);
     }
 
@@ -91,7 +80,7 @@ public class DeviceService {
     }
 
     public DeviceOutDTO changeOwner(Long deviceId, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElse(userRepository.save(User.builder().id(userId).build()));
         Device device = deviceRepository.findById(deviceId).orElseThrow(() -> new RuntimeException("Device not found"));
         device.setOwner(user);
         deviceRepository.save(device);
