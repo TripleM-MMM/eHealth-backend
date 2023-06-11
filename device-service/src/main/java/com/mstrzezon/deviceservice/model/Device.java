@@ -3,7 +3,6 @@ package com.mstrzezon.deviceservice.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
@@ -13,7 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
 public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +24,49 @@ public class Device {
     private User owner;
 
     @ManyToMany
+    @JoinTable(
+            name = "shared_devices",
+            joinColumns = @JoinColumn(name = "device_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> sharedWith;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Set<User> getSharedWith() {
+        return sharedWith;
+    }
+
+    public void setSharedWith(Set<User> sharedWith) {
+        this.sharedWith = sharedWith;
+    }
 }
