@@ -5,10 +5,14 @@ import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.admin.client.token.TokenManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class KeycloakClient {
+
+     @Value("${keycloak.server.url}")
+    private String keycloakUrl;
 
     public UsersResource getUsersResource() {
         return getInstance().realm("eHealth").users();

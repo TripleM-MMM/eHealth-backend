@@ -32,7 +32,9 @@ public class DeviceService {
     }
 
     public DeviceOutDTO createDevice(DeviceInDTO deviceInDTO) {
+        User user = userRepository.findById(deviceInDTO.getUserId()).orElse(userRepository.save(User.builder().id(deviceInDTO.getUserId()).build()));
         Device device = mapToDevice(deviceInDTO);
+        device.setOwner(user);
         Device savedDevice = deviceRepository.save(device);
         return mapToDeviceOutDTO(savedDevice);
     }

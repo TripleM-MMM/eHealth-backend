@@ -13,6 +13,7 @@ import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -31,6 +32,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    @Value("${keycloak.server.url}")
+    private String keycloakUrl;
 
     private final KeycloakClient keycloakClient;
     private final WebClient.Builder webClientBuilder;
@@ -144,7 +148,7 @@ public class UserService {
 
     public AccessTokenResponse getAccessToken(AccessTokenDTO accessTokenDTO) {
         Keycloak keycloak = KeycloakBuilder.builder()
-                .serverUrl("http://localhost:8081")
+                .serverUrl(keycloakUrl)
                 .realm("eHealth")
                 .clientId("spring-boot-client")
                 .username(accessTokenDTO.getUsername())
