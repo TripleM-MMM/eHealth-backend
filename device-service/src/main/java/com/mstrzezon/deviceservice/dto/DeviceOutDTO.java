@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,4 +15,6 @@ public class DeviceOutDTO {
     private Long id;
     private String name;
     private String description;
+    private String ownerId;
+    private List<String> sharedUsersId;
 }
